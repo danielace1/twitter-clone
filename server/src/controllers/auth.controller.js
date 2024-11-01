@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
+import { passwordRegex } from "../lib/utils/passwordRegex.js";
 
 export const signup = async (req, res) => {
   try {
@@ -16,14 +17,10 @@ export const signup = async (req, res) => {
         .json({ message: "Username or email already exists." });
     }
 
-    const passRegex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[W_])(?=.{8,})"
-    );
-    if (!passRegex.test(password)) {
-      return res.status(400).json({
-        message:
-          "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      });
+    // checking password strength
+    const passwordValidation = passwordRegex(password);
+    if (passwordValidation) {
+      return res.status(400).json(passwordValidation);
     }
 
     const salt = await bcrypt.genSalt(10);
