@@ -54,7 +54,10 @@ export const followUnfollow = async (req, res) => {
         to: userToModify._id,
       });
 
-      res.status(200).json({ message: "Unfollowed successfully" });
+      // TODO: return the id of the user as response
+      res.status(200).json({
+        message: `${userToModify.username} id: ${userToModify._id} unfollowed successfully`,
+      });
     } else {
       //following
       await User.findByIdAndUpdate(id, {
@@ -72,7 +75,9 @@ export const followUnfollow = async (req, res) => {
       });
 
       // TODO: return the id of the user as response
-      res.status(200).json({ message: "User Followed successfully" });
+      res.status(200).json({
+        message: `${userToModify.username} id: ${userToModify._id} followed successfully`,
+      });
     }
   } catch (error) {
     console.log("Error in followUnfollow controller: ", error.message);
