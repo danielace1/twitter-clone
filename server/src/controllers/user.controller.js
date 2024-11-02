@@ -47,6 +47,13 @@ export const followUnfollow = async (req, res) => {
         $pull: { following: id },
       });
 
+      //remove notification
+      await Notification.findOneAndDelete({
+        type: "follow",
+        from: req.user._id,
+        to: userToModify._id,
+      });
+
       res.status(200).json({ message: "Unfollowed successfully" });
     } else {
       //following
