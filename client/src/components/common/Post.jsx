@@ -288,7 +288,7 @@ Post.propTypes = {
     createdAt: PropTypes.string.isRequired,
     user: PropTypes.shape({
       _id: PropTypes.string.isRequired,
-      fullName: PropTypes.string.isRequired,
+      fullName: PropTypes.string,
       username: PropTypes.string.isRequired,
       profileImg: PropTypes.string,
     }).isRequired,
@@ -298,7 +298,7 @@ Post.propTypes = {
         text: PropTypes.string.isRequired,
         user: PropTypes.shape({
           _id: PropTypes.string.isRequired,
-          fullName: PropTypes.string.isRequired,
+          fullName: PropTypes.string,
           username: PropTypes.string.isRequired,
           profileImg: PropTypes.string,
         }).isRequired,

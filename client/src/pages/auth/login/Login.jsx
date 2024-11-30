@@ -42,7 +42,7 @@ const Login = () => {
 
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.error || "Failed to login.");
+        if (!res.ok) throw new Error(data.message || "Failed to login.");
         console.log(data);
       } catch (error) {
         throw new Error(error.message);
@@ -55,7 +55,7 @@ const Login = () => {
   });
 
   const handleLogin = (e) => {
-    console.log(e);
+    // console.log(e);
     loginMutation(e);
     reset();
   };

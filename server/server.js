@@ -28,6 +28,10 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
+app.get("/", (req, res) => {
+  res.json({ message: "This X clone backend." });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   connectMongoDB();

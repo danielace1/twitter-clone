@@ -55,8 +55,8 @@ const SignUp = () => {
         });
 
         const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Something went wrong");
 
-        if (!res.ok) throw new Error(data.error || "Failed to create account.");
         console.log(data);
         return data;
       } catch (error) {
@@ -72,7 +72,7 @@ const SignUp = () => {
   });
 
   const handleSignUp = (e) => {
-    console.log(e);
+    // console.log(e);
     mutate(e);
     reset();
   };
