@@ -282,30 +282,30 @@ const Post = ({ post }) => {
 
 Post.propTypes = {
   post: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
+    _id: PropTypes.string,
+    text: PropTypes.string,
     img: PropTypes.string,
-    createdAt: PropTypes.string.isRequired,
+    createdAt: PropTypes.string,
     user: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      _id: PropTypes.string,
       fullName: PropTypes.string,
-      username: PropTypes.string.isRequired,
+      username: PropTypes.string,
       profileImg: PropTypes.string,
-    }).isRequired,
+    }),
     comments: PropTypes.arrayOf(
       PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
+        _id: PropTypes.string,
+        text: PropTypes.string,
         user: PropTypes.shape({
-          _id: PropTypes.string.isRequired,
+          _id: PropTypes.string,
           fullName: PropTypes.string,
-          username: PropTypes.string.isRequired,
+          username: PropTypes.string,
           profileImg: PropTypes.string,
-        }).isRequired,
+        }),
       })
-    ).isRequired,
-    likes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
+    ),
+    likes: PropTypes.arrayOf(PropTypes.string),
+  }),
 };
 
 export default Post;
