@@ -54,7 +54,6 @@ export const followUnfollow = async (req, res) => {
         to: userToModify._id,
       });
 
-      // TODO: return the id of the user as response
       res.status(200).json({
         message: `${userToModify.username} id: ${userToModify._id} unfollowed successfully`,
       });
@@ -74,7 +73,6 @@ export const followUnfollow = async (req, res) => {
         to: userToModify._id,
       });
 
-      // TODO: return the id of the user as response
       res.status(200).json({
         message: `${userToModify.username} id: ${userToModify._id} followed successfully`,
       });

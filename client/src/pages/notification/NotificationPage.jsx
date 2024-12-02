@@ -78,10 +78,10 @@ const NotificationPage = () => {
           <div className="border-b border-gray-700" key={notification._id}>
             <div className="flex gap-2 p-4">
               {notification.type === "follow" && (
-                <FaUser className="w-7 h-7 text-primary" />
+                <FaUser className="w-5 h-5 mt-2 mr-2 text-primary" />
               )}
               {notification.type === "like" && (
-                <FaHeart className="w-7 h-7 text-red-500" />
+                <FaHeart className="w-5 h-5 mt-2 mr-2 text-red-500" />
               )}
               <Link to={`/profile/${notification.from.username}`}>
                 <div className="avatar">

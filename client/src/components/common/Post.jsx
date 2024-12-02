@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import LoadingSpinner from "./LoadingSpinner";
-// import { formatPostDate } from "../../utils/date";
+import { formatPostDate } from "../../utils/date";
 
 const Post = ({ post }) => {
   const [comment, setComment] = useState("");
@@ -19,9 +19,9 @@ const Post = ({ post }) => {
   const postOwner = post.user;
   const isLiked = post.likes.includes(authUser._id);
 
-  const isMyPost = authUser._id === post.user._id;
+  const isMyPost = authUser._id === post.user?._id;
 
-  //   const formattedDate = formatPostDate(post.createdAt);
+  const formattedDate = formatPostDate(post.createdAt);
 
   const { mutate: deletePost, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
@@ -61,10 +61,6 @@ const Post = ({ post }) => {
       }
     },
     onSuccess: (updatedLikes) => {
-      // this is not the best UX, bc it will refetch all posts
-      // queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-      // instead, update the cache directly for that post
       queryClient.setQueryData(["posts"], (oldData) => {
         return oldData.map((p) => {
           if (p._id === post._id) {
@@ -99,11 +95,41 @@ const Post = ({ post }) => {
         throw new Error(error);
       }
     },
+
     onSuccess: () => {
       toast.success("Comment posted successfully");
       setComment("");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
+
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const { mutate: deleteComment, isPending: isDeletingComment } = useMutation({
+    mutationFn: async (commentId) => {
+      try {
+        const res = await fetch(`/api/posts/${post._id}/comment/${commentId}`, {
+          method: "DELETE",
+        });
+        const data = await res.json();
+        console.log(data);
+
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+
+    onSuccess: () => {
+      toast.success("Comment deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+
     onError: (error) => {
       toast.error(error.message);
     },
@@ -117,6 +143,11 @@ const Post = ({ post }) => {
     e.preventDefault();
     if (isCommenting) return;
     commentPost();
+  };
+
+  const handleDeleteComment = (commentId) => {
+    if (isDeletingComment) return;
+    deleteComment(commentId);
   };
 
   const handleLikePost = () => {
@@ -145,7 +176,7 @@ const Post = ({ post }) => {
                 @{postOwner.username}
               </Link>
               <span>·</span>
-              {/* <span>{formattedDate}</span> */}
+              <span>{formattedDate}</span>
             </span>
             {isMyPost && (
               <span className="flex justify-end flex-1">
@@ -199,28 +230,45 @@ const Post = ({ post }) => {
                       </p>
                     )}
                     {post.comments.map((comment) => (
-                      <div key={comment._id} className="flex gap-2 items-start">
-                        <div className="avatar">
-                          <div className="w-8 rounded-full">
-                            <img
-                              src={
-                                comment.user.profileImg ||
-                                "/avatar-placeholder.png"
-                              }
-                            />
+                      <div
+                        key={comment._id}
+                        className="flex gap-2 items-start justify-between"
+                      >
+                        <div className="flex items-center">
+                          <div className="avatar mr-3">
+                            <div className="w-8 rounded-full">
+                              <img
+                                src={
+                                  comment.user.profileImg ||
+                                  "/avatar-placeholder.png"
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-1">
+                              <span className="font-bold">
+                                {comment.user.fullName}
+                              </span>
+                              <span className="text-gray-700 text-sm">
+                                @{comment.user.username}
+                              </span>
+                            </div>
+                            <div className="text-sm">{comment.text}</div>
                           </div>
                         </div>
-                        <div className="flex flex-col">
-                          <div className="flex items-center gap-1">
-                            <span className="font-bold">
-                              {comment.user.fullName}
-                            </span>
-                            <span className="text-gray-700 text-sm">
-                              @{comment.user.username}
-                            </span>
-                          </div>
-                          <div className="text-sm">{comment.text}</div>
-                        </div>
+                        {authUser._id === comment.user._id && (
+                          <span className="flex justify-end flex-1">
+                            {!isDeletingComment && (
+                              <FaTrash
+                                className="cursor-pointer hover:text-red-500 w-4 h-4"
+                                onClick={() => handleDeleteComment(comment._id)}
+                              />
+                            )}
+
+                            {isDeletingComment && <LoadingSpinner size="sm" />}
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
