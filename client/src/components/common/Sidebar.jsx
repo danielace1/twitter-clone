@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 
 import XSvg from "../svgs/X";
+import { API_URL } from "../../api";
 
 const Sidebar = () => {
   const queryClient = useQueryClient();
@@ -15,7 +16,7 @@ const Sidebar = () => {
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
       try {
-        const res = await fetch("/api/auth/logout", {
+        const res = await fetch(`${API_URL}/api/auth/logout`, {
           method: "POST",
         });
         const data = await res.json();

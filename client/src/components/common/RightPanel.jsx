@@ -4,13 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
 import useFollow from "../../hooks/useFollow";
+import { API_URL } from "../../api";
 
 const RightPanel = () => {
   const { data: suggestedUsers, isLoading } = useQuery({
     queryKey: ["suggestedUsers"],
     queryFn: async () => {
       try {
-        const res = await fetch("/api/users/suggested");
+        const res = await fetch(`${API_URL}/api/users/suggested`);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.message || "Something went wrong!");

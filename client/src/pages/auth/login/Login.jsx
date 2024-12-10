@@ -8,6 +8,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 
 import XSvg from "../../../components/svgs/X";
+import { API_URL } from "../../../api";
 
 const Schema = z.object({
   username: z.string().min(3, { message: "Username is required." }),
@@ -32,7 +33,7 @@ const Login = () => {
   } = useMutation({
     mutationFn: async ({ username, password }) => {
       try {
-        const res = await fetch("/api/auth/login", {
+        const res = await fetch(`${API_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

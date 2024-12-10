@@ -12,13 +12,14 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import Sidebar from "./components/common/Sidebar";
 import RightPanel from "./components/common/RightPanel";
 import LoadingSpinner from "./components/common/LoadingSpinner";
+import { API_URL } from "./api";
 
 const App = () => {
   const { data: authUser, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
-        const res = await fetch("/api/auth/me");
+        const res = await fetch(`${API_URL}/api/auth/me`);
         const data = await res.json();
 
         if (data.message) return null;

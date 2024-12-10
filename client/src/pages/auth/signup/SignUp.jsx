@@ -11,6 +11,7 @@ import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
 import XSvg from "../../../components/svgs/X";
+import { API_URL } from "../../../api";
 
 const Schema = z.object({
   email: z.string().email({ message: "Email is required" }),
@@ -46,7 +47,7 @@ const SignUp = () => {
   const { mutate, isError, isPending, error } = useMutation({
     mutationFn: async ({ email, username, fullName, password }) => {
       try {
-        const res = await fetch("/api/auth/signup", {
+        const res = await fetch(`${API_URL}/api/auth/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
