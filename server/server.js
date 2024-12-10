@@ -22,6 +22,15 @@ const PORT = process.env.PORT || 3000;
 const __dirname = path.resolve();
 
 app.use(
+  cors({
+    origin: [
+      "https://x-clone-client-xi.vercel.app/",
+      "http://localhost:4173/", // localhost
+    ],
+    credentials: true,
+  })
+);
+app.use(
   express.json({
     limit: "5mb",
   })

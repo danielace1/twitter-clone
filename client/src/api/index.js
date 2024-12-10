@@ -1,1 +1,1 @@
-export const API_URL = "https://twitter-clone-server-pied.vercel.app";
+export const API_URL = "https://x-clone-server-side.vercel.app";
