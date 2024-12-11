@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 app.use(
   cors({
     origin: [
-      "https://twitter-clone-tnrc.onrender.com/", // production client
+      "https://twitter-clone-tnrc.onrender.com", // production client
       "http://localhost:4173", // for local development
     ],
     credentials: true,
