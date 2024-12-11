@@ -1,6 +1,6 @@
-import path from "path";
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -19,13 +19,12 @@ cloudinary.config({
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const __dirname = path.resolve();
 
 app.use(
   cors({
     origin: [
-      "https://x-clone-client-xi.vercel.app/",
-      "http://localhost:4173/", // localhost
+      "https://x-clone-client-xi.vercel.app", // production client
+      "http://localhost:4173", // for local development
     ],
     credentials: true,
   })
@@ -42,14 +41,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/client/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
-  });
-}
 
 app.get("/", (req, res) => {
   res.json({ message: "This X clone backend." });
