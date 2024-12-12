@@ -20,6 +20,7 @@ const App = () => {
     queryFn: async () => {
       try {
         const res = await fetch(`${API_URL}/api/auth/me`, {
+          method: "GET",
           credentials: "include",
         });
         const data = await res.json();
