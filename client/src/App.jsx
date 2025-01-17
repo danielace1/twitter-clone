@@ -19,17 +19,20 @@ const App = () => {
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
-        // const res = await fetch(`${API_URL}/api/auth/me`, {
-        //   method: "GET",
-        //   credentials: "include",
-        // });
-        // const data = await res.json();
-        // if (data.message) return null;
-        // if (!res.ok) {
-        //   throw new Error(data.message || "Something went wrong");
-        // }
-        // console.log("authUser is here: ", data);
-        // return data;
+        const res = await fetch(`${API_URL}/api/auth/me`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        if (data.message) return null;
+        if (!res.ok) {
+          throw new Error(data.message || "Something went wrong");
+        }
+        console.log("authUser is here: ", data);
+        return data;
       } catch (error) {
         throw new Error(error);
       }
